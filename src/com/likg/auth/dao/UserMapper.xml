@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.likg.auth.dao.UserMapper">
+
+	<resultMap type="com.likg.auth.domain.User" id="UserMap">
+		<result column="id" property="id" />
+		<result column="user_name" property="userName" />
+	</resultMap>
+
+	<select id="selectUser" parameterType="int" resultMap="UserMap">
+		select id,user_name userName from auth_user where id = #{id}
+	</select>
+	
+	<select id="selectList" resultMap="UserMap">
+		select id,user_name userName from auth_user order by id desc
+	</select>
+	
+	
+	<insert id="saveUser" parameterType="com.likg.auth.domain.User" useGeneratedKeys="true" keyProperty="id">
+		insert into auth_user(user_name) values(#{userName})
+	</insert>
+	
+	<insert id="saveUserRole" parameterType="hashmap" >
+		insert into auth_user_role(user_id,role_id) values(#{userId},#{roleId})
+	</insert>
+	
+</mapper>

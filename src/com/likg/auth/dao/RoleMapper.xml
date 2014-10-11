@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.likg.auth.dao.RoleMapper">
+
+	<resultMap type="com.likg.auth.domain.Role" id="roleMap">
+		<result property="id" column="id" />
+		<result property="roleName" column="role_name" />
+	</resultMap>
+
+	<select id="selectRole" parameterType="int" resultMap="roleMap">
+		select id,role_name from auth_role where id = #{id}
+	</select>
+	
+	<select id="selectList" resultMap="roleMap">
+		select id,role_name from auth_role order by id desc
+	</select>
+	
+	<insert id="insertRole" parameterType="com.likg.auth.domain.Role">
+		insert into auth_role(role_name) values(#{roleName})
+	</insert>
+	
+	<update id="updateRole" parameterType="com.likg.auth.domain.Role">
+		update auth_role set role_name=#{roleName} where id=#{id}
+	</update>
+	
+	<delete id="deleteRole" parameterType="int">
+		delete from auth_role where id=#{id}
+	</delete>
+	
+	<select id="getPage" parameterType="com.likg.auth.domain.Role" resultMap="roleMap">
+		select id,role_name from auth_role 
+		where 1=1
+			<if test="roleName!=null and roleName!=''">and role_name like CONCAT('%',#{roleName},'%')</if> 
+		order by id desc
+	</select>
+	<select id="getCount" parameterType="com.likg.auth.domain.Role" resultType="int">
+		select count(id) from auth_role
+		where 1=1
+			<if test="roleName!=null and roleName!=''">and role_name like CONCAT('%',#{roleName},'%')</if>
+	</select>
+	
+</mapper>
